@@ -13,6 +13,7 @@ const forumValidator = {
       .notEmpty().withMessage('Content is required')
       .isLength({ min: 10, max: 50000 }).withMessage('Content must be 10-50000 characters'),
     body('tags')
+      .optional()
       .isArray({ min: 0, max: 10 }).withMessage('Tags must be an array with max 10 items')
       .custom((tags) => {
         tags.forEach(tag => {

@@ -143,7 +143,7 @@ export interface RegisterForm {
 export interface CreatePostForm {
   title: string;
   content: string;
-  tagIds: string[];
+  tags: string[];
   category?: string;
 }
 

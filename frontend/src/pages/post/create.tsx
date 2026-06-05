@@ -52,10 +52,14 @@ export default function CreatePostPage() {
 
     setLoading(true);
     try {
+      const selectedTags = selectedTagIds
+        .map((id) => tags.find((t) => t.id === id)?.name)
+        .filter((name): name is string => !!name);
+
       const res = await postsAPI.createPost({
         title: title.trim(),
         content: content.trim(),
-        tagIds: selectedTagIds,
+        tags: selectedTags,
         category,
       });
       const created = res.data as any;
