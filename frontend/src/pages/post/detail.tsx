@@ -3,7 +3,7 @@ import { useParams, history } from '@umijs/max';
 import { motion } from 'framer-motion';
 import {
   EyeOutlined, ClockCircleOutlined, UserOutlined,
-  BookmarkOutlined, BookmarkFilled, DeleteOutlined, ArrowLeftOutlined,
+  BookOutlined, BookFilled, DeleteOutlined, ArrowLeftOutlined,
   LoadingOutlined,
 } from '@ant-design/icons';
 import { postsAPI, commentsAPI } from '@/services/api';
@@ -222,7 +222,7 @@ export default function PostDetailPage() {
                   background: isSaved ? 'rgba(79,140,255,0.08)' : 'transparent',
                 }}
               >
-                {savingPost ? <LoadingOutlined /> : isSaved ? <BookmarkFilled /> : <BookmarkOutlined />}
+                {savingPost ? <LoadingOutlined /> : isSaved ? <BookFilled /> : <BookOutlined />}
                 {isSaved ? 'Đã lưu' : 'Lưu bài'}
               </button>
 

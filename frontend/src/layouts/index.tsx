@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet } from '@umijs/max';
+import { Outlet, useLocation } from '@umijs/max';
 import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -11,13 +11,14 @@ const pageVariants = {
 };
 
 export default function MainLayout() {
+  const location = useLocation();
   return (
     <div className="min-h-screen flex flex-col" style={{ background: 'var(--bg)' }}>
       <Navbar />
       <main className="flex-1">
         <AnimatePresence mode="wait">
           <motion.div
-            key={typeof window !== 'undefined' ? window.location.pathname : 'page'}
+            key={location.pathname}
             variants={pageVariants}
             initial="initial"
             animate="animate"

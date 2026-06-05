@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Outlet, history } from '@umijs/max';
+import { Outlet, history, useLocation } from '@umijs/max';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   DashboardOutlined,
@@ -26,7 +26,8 @@ export default function AdminLayout() {
   const [collapsed, setCollapsed] = useState(false);
   const { user, logout } = useAuthStore();
   const { addToast } = useUIStore();
-  const currentPath = typeof window !== 'undefined' ? window.location.pathname : '';
+  const location = useLocation();
+  const currentPath = location.pathname;
 
   const handleLogout = async () => {
     try { await authAPI.logout(); } catch {}

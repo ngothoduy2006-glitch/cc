@@ -6,7 +6,7 @@ import {
   PlusOutlined,
   UserOutlined,
   BellOutlined,
-  BookmarkOutlined,
+  BookOutlined,
   LogoutOutlined,
   HomeOutlined,
   MessageOutlined,
@@ -231,7 +231,7 @@ export default function Navbar() {
                         {[
                           { label: 'Trang cá nhân', icon: <UserOutlined />, path: `/profile/${user?.id}` },
                           { label: 'Thông báo', icon: <BellOutlined />, path: '/notifications' },
-                          { label: 'Bài đã lưu', icon: <BookmarkOutlined />, path: '/saved-posts' },
+                          { label: 'Bài đã lưu', icon: <BookOutlined />, path: '/saved-posts' },
                           ...(isAdmin ? [{ label: 'Admin Panel', icon: <SettingOutlined />, path: '/admin/dashboard' }] : []),
                         ].map((item) => (
                           <button

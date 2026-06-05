@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { BookmarkFilled, LoadingOutlined } from '@ant-design/icons';
+import { BookFilled, LoadingOutlined } from '@ant-design/icons';
 import { postsAPI } from '@/services/api';
 import type { Post } from '@/types';
 import PostCard from '@/components/PostCard';
@@ -32,7 +32,7 @@ export default function SavedPostsPage() {
             className="w-10 h-10 rounded-xl flex items-center justify-center"
             style={{ background: 'linear-gradient(135deg, #4F8CFF, #7B61FF)' }}
           >
-            <BookmarkFilled style={{ color: '#fff', fontSize: 18 }} />
+            <BookFilled style={{ color: '#fff', fontSize: 18 }} />
           </div>
           <div>
             <h1 className="text-2xl font-black" style={{ color: 'var(--text)' }}>Bài đã lưu</h1>
