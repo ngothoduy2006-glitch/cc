@@ -29,6 +29,67 @@ const ROLES = [
 
 type Role = 'student' | 'lecturer';
 
+const inputStyle: React.CSSProperties = {
+  background: 'rgba(255,255,255,0.08)',
+  border: '1.5px solid rgba(255,255,255,0.15)',
+  borderRadius: 12,
+  color: '#fff',
+  outline: 'none',
+  width: '100%',
+  padding: '11px 16px 11px 44px',
+  fontSize: '0.9rem',
+  fontFamily: 'inherit',
+  transition: 'all 0.2s',
+};
+
+type FieldProps = {
+  label: string;
+  icon: React.ReactNode;
+  type?: string;
+  value: string;
+  onChange: (val: string) => void;
+  error?: string;
+  placeholder?: string;
+  required?: boolean;
+  showPasswordBtn?: boolean;
+  onTogglePassword?: () => void;
+};
+
+const Field = ({
+  label, icon, type = 'text', value, onChange, error, placeholder, required = false,
+  showPasswordBtn, onTogglePassword,
+}: FieldProps) => (
+  <div>
+    <label className="block text-xs font-medium mb-1.5" style={{ color: 'rgba(255,255,255,0.65)' }}>
+      {label} {required && <span style={{ color: '#ff8080' }}>*</span>}
+    </label>
+    <div className="relative">
+      <span className="absolute left-4 top-1/2 -translate-y-1/2" style={{ color: 'rgba(255,255,255,0.35)', fontSize: 14 }}>
+        {icon}
+      </span>
+      <input
+        type={type}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+        style={{ ...inputStyle, paddingRight: showPasswordBtn ? 44 : 16, borderColor: error ? '#ff6b6b' : undefined }}
+        onFocus={(e) => { e.target.style.borderColor = '#4F8CFF'; }}
+        onBlur={(e) => { e.target.style.borderColor = error ? '#ff6b6b' : 'rgba(255,255,255,0.15)'; }}
+      />
+      {showPasswordBtn && (
+        <button type="button" onClick={onTogglePassword}
+          className="absolute right-4 top-1/2 -translate-y-1/2"
+          style={{ color: 'rgba(255,255,255,0.4)', background: 'none', border: 'none', cursor: 'pointer' }}>
+          {type === 'password' ? <EyeOutlined /> : <EyeInvisibleOutlined />}
+        </button>
+      )}
+    </div>
+    {error && (
+      <p className="mt-1 text-xs" style={{ color: '#ff8080' }}>{error}</p>
+    )}
+  </div>
+);
+
 export default function RegisterPage() {
   const { login } = useAuthStore();
   const toast = useToast();
@@ -90,68 +151,6 @@ export default function RegisterPage() {
     }
   };
 
-  const inputStyle: React.CSSProperties = {
-    background: 'rgba(255,255,255,0.08)',
-    border: '1.5px solid rgba(255,255,255,0.15)',
-    borderRadius: 12,
-    color: '#fff',
-    outline: 'none',
-    width: '100%',
-    padding: '11px 16px 11px 44px',
-    fontSize: '0.9rem',
-    fontFamily: 'inherit',
-    transition: 'all 0.2s',
-  };
-
-  const Field = ({
-    label, icon, type = 'text', field, placeholder, required = false,
-  }: {
-    label: string; icon: React.ReactNode; type?: string; field: string;
-    placeholder?: string; required?: boolean;
-  }) => (
-    <div>
-      <label className="block text-xs font-medium mb-1.5" style={{ color: 'rgba(255,255,255,0.65)' }}>
-        {label} {required && <span style={{ color: '#ff8080' }}>*</span>}
-      </label>
-      <div className="relative">
-        <span className="absolute left-4 top-1/2 -translate-y-1/2" style={{ color: 'rgba(255,255,255,0.35)', fontSize: 14 }}>
-          {icon}
-        </span>
-        {type === 'password' ? (
-          <>
-            <input
-              type={showPassword ? 'text' : 'password'}
-              value={(form as any)[field]}
-              onChange={(e) => update(field, e.target.value)}
-              placeholder={placeholder}
-              style={{ ...inputStyle, paddingRight: 44, borderColor: errors[field] ? '#ff6b6b' : undefined }}
-              onFocus={(e) => { e.target.style.borderColor = '#4F8CFF'; }}
-              onBlur={(e) => { e.target.style.borderColor = errors[field] ? '#ff6b6b' : 'rgba(255,255,255,0.15)'; }}
-            />
-            <button type="button" onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-4 top-1/2 -translate-y-1/2"
-              style={{ color: 'rgba(255,255,255,0.4)', background: 'none', border: 'none', cursor: 'pointer' }}>
-              {showPassword ? <EyeInvisibleOutlined /> : <EyeOutlined />}
-            </button>
-          </>
-        ) : (
-          <input
-            type={type}
-            value={(form as any)[field]}
-            onChange={(e) => update(field, e.target.value)}
-            placeholder={placeholder}
-            style={{ ...inputStyle, borderColor: errors[field] ? '#ff6b6b' : undefined }}
-            onFocus={(e) => { e.target.style.borderColor = '#4F8CFF'; }}
-            onBlur={(e) => { e.target.style.borderColor = errors[field] ? '#ff6b6b' : 'rgba(255,255,255,0.15)'; }}
-          />
-        )}
-      </div>
-      {errors[field] && (
-        <p className="mt-1 text-xs" style={{ color: '#ff8080' }}>{errors[field]}</p>
-      )}
-    </div>
-  );
-
   return (
     <div
       className="rounded-3xl p-8"
@@ -194,20 +193,17 @@ export default function RegisterPage() {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        <Field label="Họ và tên" icon={<UserOutlined />} field="name" placeholder="Nguyễn Văn A" required />
-        <Field label="Mã số (SV/GV)" icon={<IdcardOutlined />} field="code"
-          placeholder={role === 'student' ? 'SV20210001' : 'GV001'} />
-        <Field label="Email" icon={<MailOutlined />} type="email" field="email"
-          placeholder="email@hust.edu.vn" required />
-        <Field label="Mật khẩu" icon={<LockOutlined />} type="password" field="password"
-          placeholder="Ít nhất 6 ký tự" required />
+        <Field label="Họ và tên" icon={<UserOutlined />} value={form.name} onChange={(v) => update('name', v)} error={errors.name} placeholder="Nguyễn Văn A" required />
+        <Field label="Mã số (SV/GV)" icon={<IdcardOutlined />} value={form.code} onChange={(v) => update('code', v)} error={errors.code} placeholder={role === 'student' ? 'SV20210001' : 'GV001'} />
+        <Field label="Email" icon={<MailOutlined />} type="email" value={form.email} onChange={(v) => update('email', v)} error={errors.email} placeholder="email@hust.edu.vn" required />
+        <Field label="Mật khẩu" icon={<LockOutlined />} type={showPassword ? 'text' : 'password'} value={form.password} onChange={(v) => update('password', v)} error={errors.password} placeholder="Ít nhất 6 ký tự" required showPasswordBtn onTogglePassword={() => setShowPassword(!showPassword)} />
 
         <div className="grid grid-cols-2 gap-3">
-          <Field label="Khoa" icon={<TeamOutlined />} field="faculty" placeholder="CNTT" />
+          <Field label="Khoa" icon={<TeamOutlined />} value={form.faculty} onChange={(v) => update('faculty', v)} error={errors.faculty} placeholder="CNTT" />
           {role === 'student' ? (
-            <Field label="Lớp" icon={<TeamOutlined />} field="class" placeholder="IT-01 K66" />
+            <Field label="Lớp" icon={<TeamOutlined />} value={form.class} onChange={(v) => update('class', v)} error={errors.class} placeholder="IT-01 K66" />
           ) : (
-            <Field label="Bộ môn" icon={<TeamOutlined />} field="department" placeholder="Phần mềm" />
+            <Field label="Bộ môn" icon={<TeamOutlined />} value={form.department} onChange={(v) => update('department', v)} error={errors.department} placeholder="Phần mềm" />
           )}
         </div>
 
