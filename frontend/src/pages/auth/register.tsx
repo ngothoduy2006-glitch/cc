@@ -142,7 +142,7 @@ export default function RegisterPage() {
       const { token, user } = res.data as any;
       login(user, token);
       toast.success(`Chào mừng ${user.name}! Đăng ký thành công!`);
-      history.push('/');
+      window.location.href = '/';
     } catch (err: any) {
       const msg = err?.response?.data?.message || 'Đăng ký thất bại. Vui lòng thử lại.';
       toast.error(msg);

@@ -38,9 +38,9 @@ export default function LoginPage() {
 
       // Redirect by role
       if (user.role === 'admin') {
-        history.push('/admin/dashboard');
+        window.location.href = '/admin/dashboard';
       } else {
-        history.push('/');
+        window.location.href = '/';
       }
     } catch (err: any) {
       const msg = err?.response?.data?.message || 'Email hoặc mật khẩu không đúng';
