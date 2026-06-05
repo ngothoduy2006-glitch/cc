@@ -15,45 +15,19 @@ const Notification = sequelize.define(
 			allowNull: false,
 		},
 
-		senderId: {
+		type: {
+			type: DataTypes.STRING(50),
+			allowNull: false,
+		},
+
+		targetId: {
 			type: DataTypes.UUID,
 			allowNull: true,
-		},
-
-		type: {
-			type: DataTypes.ENUM(
-				'NEW_COMMENT',
-				'NEW_REPLY',
-				'NEW_POST',
-				'POST_VOTE',
-				'COMMENT_VOTE',
-			),
-			allowNull: false,
-		},
-
-		title: {
-			type: DataTypes.STRING,
-			allowNull: false,
 		},
 
 		message: {
-			type: DataTypes.TEXT,
+			type: DataTypes.STRING(500),
 			allowNull: false,
-		},
-
-		postId: {
-			type: DataTypes.UUID,
-			allowNull: true,
-		},
-
-		commentId: {
-			type: DataTypes.UUID,
-			allowNull: true,
-		},
-
-		link: {
-			type: DataTypes.STRING,
-			allowNull: true,
 		},
 
 		read: {

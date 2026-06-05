@@ -1,5 +1,4 @@
-const { Comment, Post, User, CommentVote } = require('../models');
-const { notifyUser } = require('../utils/notificationService');
+const { Comment, Post, CommentVote } = require('../models');
 
 async function updateComment(req, res, next) {
   try {

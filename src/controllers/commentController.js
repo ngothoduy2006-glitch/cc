@@ -1,4 +1,4 @@
-const { Comment, Post, User, CommentVote } = require('../models');
+const { Comment, Post, User } = require('../models');
 const { notifyUser } = require('../utils/notificationService');
 
 function buildCommentTree(comments) {

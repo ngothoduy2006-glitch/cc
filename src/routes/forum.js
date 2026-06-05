@@ -1,6 +1,6 @@
 // ✨ CẬP NHẬT FILE: backend/routes/forum.js
 const express = require('express');
-const { authenticate, authorize } = require('../middlewares/authMiddleware');
+const { authenticate } = require('../middlewares/authMiddleware');
 const postController = require('../controllers/postController');
 const postActionController = require('../controllers/postActionController');
 const postSaveController = require('../controllers/postSaveController');

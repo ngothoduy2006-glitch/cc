@@ -1,10 +1,27 @@
 const { User, Post, Comment, Tag, sequelize } = require('../models');
+const { Op } = require('sequelize');
 
 async function getStats(req, res, next) {
   try {
     const totalUsers    = await User.count();
     const totalPosts    = await Post.count({ where: { status: 'active' } }); // ✅ chỉ đếm active
     const totalComments = await Comment.count();
+    const totalTags     = await Tag.count();
+
+    const startOfToday = new Date();
+    startOfToday.setHours(0, 0, 0, 0);
+    const postsToday = await Post.count({
+      where: {
+        createdAt: {
+          [Op.gte]: startOfToday,
+        },
+        status: 'active',
+      },
+    });
+
+    const activeUsers = await User.count({
+      where: { status: 'active' },
+    });
 
     // Thống kê bài theo trạng thái
     const postsByStatus = await Post.findAll({
@@ -32,8 +49,8 @@ async function getStats(req, res, next) {
         'id', 'name', 'color',
         [sequelize.fn('COUNT', sequelize.col('posts.id')), 'count'],
       ],
-      include: [{ model: Post, as: 'posts', attributes: [] }],
-      group: ['Tag.id'],
+      include: [{ model: Post, as: 'posts', attributes: [], through: { attributes: [] } }],
+      group: ['Tag.id', 'Tag.name', 'Tag.color'],
       order: [[sequelize.literal('count'), 'DESC']],
       limit: 5,
       subQuery: false,
@@ -43,6 +60,9 @@ async function getStats(req, res, next) {
       totalUsers,
       totalPosts,
       totalComments,
+      totalTags,
+      postsToday,
+      activeUsers,
       postsByStatus: postsByStatus.reduce((acc, r) => {
         acc[r.status] = Number(r.count);
         return acc;
